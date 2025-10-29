@@ -1,0 +1,1 @@
+In this small design, i perform an operation 2 + 3 with a simple state that is a linked list. CHARGE adds a number in the linked list, and ADD consumes the last two values of the list and adds it to the list. At the end we print the last value.

@@ -11,3 +11,16 @@ Register* register_new() {
     return new_register;
 }
 
+void register_add() {
+    my_register->rg2 += my_register->rg1;
+}
+
+void register_charge(int value) {
+    my_register->rg1 = my_register->rg2;
+    my_register->rg2 = value;
+}
+
+int register_get_last_value() {
+    return my_register->rg2;
+}
+
