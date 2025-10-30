@@ -1,38 +1,25 @@
 #ifndef INSTRUCTION_H
 #define INSTRUCTION_H
 
-typedef enum Operand {
-    START,
-    HALT,
-    CHARGE,
-    ADD,
-    PUSH,
-    PULL
-} Operand;
+#include "instruction_operand.h"
+#include "instruction_memory_location.h"
 
-typedef enum MemoryLocation {
-    REGISTER_1 = 1,
-    REGISTER_2 = 2,
-    STACK_0 = 0,
-    STACK_1 = 1,
-    STACK_2 = 2,
-    STACK_3 = 3,
-    STACK_4 = 4,
-    STACK_5 = 5,
-    STACK_6 = 6,
-    STACK_7 = 7,
-    STACK_8 = 8,
-    STACK_9 = 9,
-    NO_LOCATION
-} MemoryLocation;
 
 typedef struct Instruction {
     enum Operand operand;
     int value;
     enum MemoryLocation destination;
+    struct Instruction *next;
 } Instruction;
 
-Instruction* instruction_new(Operand operand, int value, MemoryLocation destination);
-void read_instruction(Instruction *instruction);
+typedef struct Code {
+    Instruction *first_instruction;
+} Code;
+
+Instruction* instruction_new(enum Operand operand, int value, MemoryLocation destination);
+void instruction_execute(Instruction *instruction);
+Code* code_parse(char *code_path);
+void code_dump(Code *code);
+void code_execute(Code *code);
 
 #endif

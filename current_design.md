@@ -86,3 +86,19 @@ The instructions make state transformations :
 - Maybe I should rename the register to CPU, because it is the unit of the VM that performs the operations.
 - The behavior of the two registers is not very clear for now. Currently it behaves as if CHARGE or PULL was adding a new node on a linked list, and add adds a node with the result... but simulated with only two register. rg2 is the last item of this list and rg1 the n-1 th
 
+
+### 2025-10-30 iteration ###
+The code is now explicitely a linked list. GPT suggested me to also try arrays. I will think later about this design choice and the possible implications.
+I have implemented the logic that parses a code into a code linked list for execution.
+It allows easier testing for the code.
+The code is now executed based on this linked list.
+Today was mainly about that. Next time i should do more design thinking about invariants, cpu etc.
+I also should think about the return value of the program. What does it mean and how should it be included in the data flow.
+
+The gpt hints for the design are the following : 
+- Precise abstraction boundary between register and stack memory. Are register operationals (temporary operands) or semantics (mini state machine).
+- Precise hierarchie between Program, CPU, Memory layers. It should define encapsulation (my interpretation : the instruction execution should only call the CPU that deals with memory);
+- Formalize invariants
+- Define more precisely an instruction such as ADD. Explain what conditions should be met when executed etc... that will help precise the model.
+
+
