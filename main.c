@@ -11,7 +11,8 @@ int main() {
 
     Code *code = code_parse("code.txt");
     code_dump(code);
-    code_execute(code);
+    cpu_initialize();
+    cpu_execute_code(code);
     free(code);
 }
 

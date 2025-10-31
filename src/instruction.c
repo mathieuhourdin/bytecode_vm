@@ -90,38 +90,3 @@ void code_dump(Code *code) {
         instruction =  instruction->next;
     }
 }
-
-void instruction_execute(Instruction *instruction) {
-    switch (instruction->operand) {
-        case START:
-            stacksegment = stacksegment_new();
-            cpu = cpu_new();
-            break;
-        case CHARGE:
-            cpu_register_charge(instruction->value);
-            break;
-        case ADD:
-            cpu_add();
-            break;
-        case PUSH:
-            int value = cpu_register_get_last_value();
-            stacksegment_push(value, instruction->destination);
-            break;
-        case PULL:
-            int pull_value = stacksegment_pull(instruction->destination);
-            cpu_register_charge(pull_value);
-            break;
-        case HALT:
-            printf("Result of the program : %d\n", cpu_register_get_last_value());
-            break;
-    }
-}
-
-void code_execute(Code *code) {
-    Instruction *instruction = code->first_instruction;
-    while (instruction) {
-        instruction_execute(instruction);
-        instruction = instruction->next;
-    }
-}
-
