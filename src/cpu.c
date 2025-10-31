@@ -19,6 +19,16 @@ void cpu_initialize() {
     cpu = cpu_new();
 }
 
+/**
+ *
+ * design thinking about the add instruction.
+ *
+ * The add instruction supposes that we have two integer values defined somewhere that we add.
+ * And a place where the result is stored for future output (we should have different step for add and for store at this place);
+ * In a hardware point of view, the two int values are put in a register in the cpu, related to the ADD electric circuit.
+ * And some other register receives the output value of the addition.
+ *
+ */
 void cpu_add() {
     cpu->rg2 += cpu->rg1;
 }
@@ -59,6 +69,13 @@ void cpu_execute_instruction() {
     cpu->code_pointer = instruction->next;
 }
 
+/**
+ *
+ * @brief launch the execution of a given program;
+ *
+ * To be valid, a program should start with a START instruction and end with a HALT instruction.
+ *
+ */
 void cpu_execute_code(Code *code) {
     if (code->first_instruction == NULL || code->first_instruction->operand != START) {
         return;
