@@ -102,3 +102,16 @@ The gpt hints for the design are the following :
 - Define more precisely an instruction such as ADD. Explain what conditions should be met when executed etc... that will help precise the model.
 
 
+### 2025610-31 ###
+
+I had an idea during the night for a clean encapsulation but not sure I remember.
+The method to execute an instruction should not be instruction_execute, but cpu_execute(instruction);
+That way it will be clear that it is the CPU that executes the instructions, and that is the orchestrator of the program execution. 
+Not sure but it could even hold the memory allocation of the stack, and only resolve the address based on what it initialized first.
+Maybe it should hold some kind of a context of the program execution (stack location for instance).
+There is a question of the different places the CPU could hold. Should it have an output registry and two different hold registries ?
+
+
+
+
+

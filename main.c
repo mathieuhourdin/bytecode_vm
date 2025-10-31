@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "src/register.h"
+#include "src/cpu.h"
 #include "src/instruction.h"
 #include "src/stack.h"
 

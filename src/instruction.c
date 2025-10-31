@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "instruction.h"
-#include "register.h"
+#include "cpu.h"
 #include "stack.h"
 #include "instruction_operand.h"
 #include "instruction_memory_location.h"
@@ -95,24 +95,24 @@ void instruction_execute(Instruction *instruction) {
     switch (instruction->operand) {
         case START:
             stacksegment = stacksegment_new();
-            my_register = register_new();
+            cpu = cpu_new();
             break;
         case CHARGE:
-            register_charge(instruction->value);
+            cpu_register_charge(instruction->value);
             break;
         case ADD:
-            register_add();
+            cpu_add();
             break;
         case PUSH:
-            int value = register_get_last_value();
+            int value = cpu_register_get_last_value();
             stacksegment_push(value, instruction->destination);
             break;
         case PULL:
             int pull_value = stacksegment_pull(instruction->destination);
-            register_charge(pull_value);
+            cpu_register_charge(pull_value);
             break;
         case HALT:
-            printf("Result of the program : %d\n", register_get_last_value());
+            printf("Result of the program : %d\n", cpu_register_get_last_value());
             break;
     }
 }
