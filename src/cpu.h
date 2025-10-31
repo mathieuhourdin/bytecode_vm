@@ -16,11 +16,7 @@ typedef struct Cpu {
 
 extern Cpu *cpu;
 
-Cpu* cpu_new();
 void cpu_initialize();
-void cpu_add();
-int cpu_register_get_last_value();
-void cpu_register_charge(int value);
 void cpu_execute_code(Code *code);
 
 #endif
