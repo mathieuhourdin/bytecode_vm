@@ -7,7 +7,10 @@ typedef enum Operand {
     CHARGE,
     ADD,
     PUSH,
-    PULL
+    PULL,
+    IF,
+    CPR,
+    JMP
 } Operand;
 
 Operand operand_from_string(char* str);

@@ -33,6 +33,22 @@ void cpu_add() {
     cpu->rg2 += cpu->rg1;
 }
 
+void cpu_compare() {
+    cpu->rg1 = cpu->rg1 > cpu->rg2;
+}
+
+void cpu_if() {
+    if (cpu->rg1) {
+        cpu->code_pointer += 1;
+    } else {
+        cpu->code_pointer += 2;
+    }
+}
+
+void cpu_jump(int value) {
+    cpu->code_pointer = &cpu->code->instructions[value - 1];
+}
+
 void cpu_register_charge(int value) {
     cpu->rg1 = cpu->rg2;
     cpu->rg2 = value;
@@ -62,11 +78,20 @@ void cpu_execute_instruction() {
             int pull_value = stacksegment_pull(instruction->destination);
             cpu_register_charge(pull_value);
             break;
+        case CPR:
+            cpu_compare();
+            break;
+        case IF:
+            cpu_if();
+            return;
+        case JMP:
+            cpu_jump(instruction->value);
+            return;
         case HALT:
             printf("Result of the program : %d\n", cpu_register_get_last_value());
             return;
     }
-    cpu->code_pointer = instruction->next;
+    cpu->code_pointer = instruction + 1;
 }
 
 /**
@@ -77,10 +102,11 @@ void cpu_execute_instruction() {
  *
  */
 void cpu_execute_code(Code *code) {
-    if (code->first_instruction == NULL || code->first_instruction->operand != START) {
+    /*if (code->first_instruction == NULL || code->first_instruction->operand != START) {
         return;
-    }
-    cpu->code_pointer = code->first_instruction;
+    }*/
+    cpu->code = code;
+    cpu->code_pointer = code->instructions;
     while (cpu->code_pointer->operand != HALT) {
         printf("Instruction : %p\n", cpu->code_pointer);
         cpu_execute_instruction();

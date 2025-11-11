@@ -10,20 +10,23 @@
 
 Code* code_new() {
     Code *code = malloc(sizeof(Code));
-    code->first_instruction = NULL;
+    code->instructions = malloc(128 * sizeof(Instruction));
+    code->length = 0;
+    code->capacity = 128;
     return code;
 }
 
-void code_push(Code *code, Instruction *new_instruction) {
-    Instruction *instruction = code->first_instruction;
-    if (instruction == NULL) {
-        code->first_instruction = new_instruction;
-        return;
+void instruction_dump(Instruction *instruction) {
+    printf("Operand %s, value : %d, destination : %s\n", operand_to_string(instruction->operand), instruction->value, memory_location_to_string(instruction->destination));
+}
+
+void code_push(Code *code, Instruction new_instruction) {
+    if (code->length == code->capacity) {
+        code->instructions = realloc(code->instructions, 2 * code->capacity);
+        code->capacity = 2 * code->capacity;
     }
-    while (instruction->next) {
-        instruction = instruction->next;
-    }
-    instruction->next = new_instruction;
+    code->instructions[code->length] = new_instruction;
+    code->length++;
 }
 
 Instruction* instruction_new(Operand operand, int value, MemoryLocation destination) {
@@ -34,35 +37,35 @@ Instruction* instruction_new(Operand operand, int value, MemoryLocation destinat
     return instruction;
 }
 
-
 Instruction* instruction_parse(char *code_line) {
     code_line[strlen(code_line) - 1] = '\0';
-    int i = 0;
-    char *operand_string = malloc(6 * sizeof(char));
-    while (code_line[i] != '\0' && code_line[i] != '\n' && code_line[i] != ' ') {
-        i++;
-    }
-    operand_string = strncpy(operand_string, code_line, i);
+    //TODO free operand_string
+    char *operand_string = malloc(4 * sizeof(char));
+    operand_string = strncpy(operand_string, code_line, 3);
+    operand_string[3] = '\0';
     Operand operand = operand_from_string(operand_string);
+
+    printf("\nOperand from string : %s\n", operand_to_string(operand));
 
     switch (operand) {
         case HALT:
         case START:
         case ADD:
+        case IF:
+        case CPR:
             return instruction_new(operand, 0, NO_LOCATION);
         case PULL:
         case PUSH:
-            MemoryLocation destination = memory_location_from_string(code_line + i + 1);
+            MemoryLocation destination = memory_location_from_string(code_line + 4);
             return instruction_new(operand, 0, destination);
         case CHARGE:
-            int value = strtol(code_line + i + 1, NULL, 10);
+            int value = strtol(code_line + 4, NULL, 10);
             return instruction_new(operand, value, NO_LOCATION);
+        case JMP:
+            int instruction_offset = strtol(code_line + 4, NULL, 10);
+            return instruction_new(operand, instruction_offset, NO_LOCATION);
     }
     return NULL;
-}
-
-void instruction_dump(Instruction *instruction) {
-    printf("Operand %s, value : %d, destination : %s\n", operand_to_string(instruction->operand), instruction->value, memory_location_to_string(instruction->destination));
 }
 
 Code* code_parse(char *code_path) {
@@ -76,7 +79,8 @@ Code* code_parse(char *code_path) {
     char line[256];
     while (fgets(line, sizeof(line), file)) {
         Instruction *instruction = instruction_parse(line);
-        code_push(code, instruction);
+        code_push(code, *instruction);
+        free(instruction);
         printf("%s", line);   // fgets keeps the '\n' if present
     }
     fclose(file);
@@ -84,9 +88,8 @@ Code* code_parse(char *code_path) {
 }
 
 void code_dump(Code *code) {
-    Instruction *instruction = code->first_instruction;
-    while(instruction) {
-        instruction_dump(instruction);
-        instruction =  instruction->next;
+
+    for (int i = 0; i < code->length; i++) {
+        instruction_dump(&code->instructions[i]);
     }
 }

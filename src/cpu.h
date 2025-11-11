@@ -12,6 +12,7 @@ typedef struct Cpu {
     int rg1;
     int rg2;
     Instruction *code_pointer;
+    Code *code;
 } Cpu;
 
 extern Cpu *cpu;

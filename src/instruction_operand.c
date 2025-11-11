@@ -3,29 +3,38 @@
 #include "instruction_operand.h"
 
 Operand operand_from_string(char* str) {
-    if (strcmp(str, "START") == 0) return START;
-    if (strcmp(str, "CHARGE") == 0) return CHARGE;
+    if (strcmp(str, "STT") == 0) return START;
+    if (strcmp(str, "CHG") == 0) return CHARGE;
     if (strcmp(str, "ADD") == 0) return ADD;
-    if (strcmp(str, "PUSH") == 0) return PUSH;
-    if (strcmp(str, "PULL") == 0) return PULL;
-    if (strcmp(str, "HALT") == 0) return HALT;
+    if (strcmp(str, "PSH") == 0) return PUSH;
+    if (strcmp(str, "PUL") == 0) return PULL;
+    if (strcmp(str, "HLT") == 0) return HALT;
+    if (strcmp(str, "IFF") == 0) return IF;
+    if (strcmp(str, "CPR") == 0) return CPR;
+    if (strcmp(str, "JMP") == 0) return JMP;
     return HALT;
 }
 
 char* operand_to_string(Operand operand) {
     switch (operand) {
         case START:
-            return "START";
+            return "STT";
         case CHARGE:
-            return "CHARGE";
+            return "CHG";
         case ADD:
             return "ADD";
         case PUSH:
-            return "PUSH";
+            return "PSH";
         case PULL:
-            return "PULL";
+            return "PUL";
         case HALT:
-            return "HALT";
+            return "HLT";
+        case IF:
+            return "IFF";
+        case CPR:
+            return "CPR";    
+        case JMP:
+            return "JMP";
     }
     return "UNDEFINED";
 }

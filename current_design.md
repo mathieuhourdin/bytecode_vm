@@ -102,7 +102,7 @@ The gpt hints for the design are the following :
 - Define more precisely an instruction such as ADD. Explain what conditions should be met when executed etc... that will help precise the model.
 
 
-### 2025610-31 ###
+### 2025-10-31 ###
 
 I had an idea during the night for a clean encapsulation but not sure I remember.
 The method to execute an instruction should not be instruction_execute, but cpu_execute(instruction);
@@ -111,7 +111,10 @@ Not sure but it could even hold the memory allocation of the stack, and only res
 Maybe it should hold some kind of a context of the program execution (stack location for instance).
 There is a question of the different places the CPU could hold. Should it have an output registry and two different hold registries ?
 
+### 2025-11-11 ###
 
+I have a few questions left about the CPU's design but first I will try to create a loop in my interpreted code. It may force certain solutions over others.
+To have a loop, i need to change the data structure of the instructions. Since i need to jumb back or forward i need to have an array instead of a list. I need to use the next field for those jumps but currently the next field is used to keep all the instructions altogether so i need to have a new way to keep the code.
 
-
+It seems clear that if i need to jump across multiple instructions in the code, the array is better since i dont need to loop through the linked list. I just need to do pointer arithmetic. However i could just store the next instruction pointer it would allow to jump too. Lets see.
 

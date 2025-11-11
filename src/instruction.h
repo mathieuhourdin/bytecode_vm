@@ -13,13 +13,29 @@ typedef struct Instruction {
 } Instruction;
 
 typedef struct Code {
-    Instruction *first_instruction;
+    Instruction *instructions;
+    int length;
+    int capacity;
 } Code;
 
+/**
+ * returns a new instruction from operand, value and memory location
+ */
 Instruction* instruction_new(enum Operand operand, int value, MemoryLocation destination);
-void instruction_execute(Instruction *instruction);
+
+/**
+ * takes the path to a given code file and returns a program ready for execution by the cpu
+ */
 Code* code_parse(char *code_path);
+
+/**
+ * takes a copy of the pushed instruction so it doesn't take ownership.
+ */
+void code_push(Code *code, Instruction new_instruction);
+
+/**
+ * Prints all instructions of the code
+ */
 void code_dump(Code *code);
-void code_execute(Code *code);
 
 #endif
