@@ -18,25 +18,25 @@
 
 A few example of ISA transcription from language like C : 
 1 assignation
-`a = 2;`
-`CHG 2
+```a = 2;```
+```CHG 2
 SET
-PUSH STACK_0`
+PUSH STACK_0```
 
 2 assignation of sum
-`c = 3 + 4;`
-`CHG 3
+```c = 3 + 4;```
+```CHG 3
 SET
 CHG 4
 ADD
-PUSH STACK_1`
+PUSH STACK_1```
 
 3 for loop
-`c = 1;
+```c = 1;
 while (int i = 0; i < 10; i++) {
   c = 2 * c;
-}`
-`CHG 1
+}```
+```CHG 1
 SET
 PSH STACK_3
 CHG 0
@@ -59,7 +59,7 @@ SET
 CHG 1
 ADD
 PSH STACK_2
-JMP 18`
+JMP 18```
 
 
 
