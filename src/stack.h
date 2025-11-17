@@ -6,10 +6,8 @@ typedef struct StackSegment {
     int segment[10];
 } StackSegment;
 
-extern StackSegment *stacksegment;
-
 StackSegment* stacksegment_new();
-void stacksegment_push(int value, int index);
-int stacksegment_pull(int index);
+void stacksegment_push(StackSegment *stacksegment, int value, int index);
+int stacksegment_pull(StackSegment *stacksegment, int index);
 
 #endif

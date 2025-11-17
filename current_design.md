@@ -118,3 +118,54 @@ To have a loop, i need to change the data structure of the instructions. Since i
 
 It seems clear that if i need to jump across multiple instructions in the code, the array is better since i dont need to loop through the linked list. I just need to do pointer arithmetic. However i could just store the next instruction pointer it would allow to jump too. Lets see.
 
+####Result : 
+I managed to create a VM that can calculate loops.
+
+#####program design :
+The program is now a vector of instruction which can be resized.
+Instructions can be referenced by there index.
+
+#####code design : 
+The instructions in plane text have a 3-char code for the operation (currently named operand but it should be renamed).
+The operation IF jumps to the next instruction if rg1 is true, to the second next if false.
+The operation JMP jumps to the instruction with the range of the value.
+
+#####cpu design :
+The CPU holds all logic of execution.
+It holds the program address
+It holds a pointer to the currently executed operation
+All operations except for HALT leed to another instruction
+The cpu_execute method is responsible for going to the next instruction.
+The CPU should always have a valid state (describe in CPU_H);
+
+### 2025-11-13 ###
+
+Today I've worked on the high level feedbacks given by gpt.
+Basically, the vm gets more clear but some thing are still unclear.
+There are few issues with the invariants that should be more central to the design to decide wether the state can be wrong sometime or not. On the ownership of the memory. And on the control flow (who decides which instruction to execute next).
+However the main thing to work on is the design of the cpu, and the role of the registers (and of the stack).
+
+It seems that my design is halfway to different kinds of existing designs : register, stack, accumulator and real CPU design (x86).
+The choice to have both registers and stack makes it close to a x86 design. But I use the rg1 register just like an accumulator, thing that use to exist in some ancient designs.
+Classic VMs choose either to use only registers (Lua) or only a Stack (JVM...).
+I need to find a balance between a functional project and a project where i work on my architectural abilities.
+What I suggest is the following : 
+- Go to the end of a coherent project based on my natural intuitions : accumulator and one operand instructions. Write sufficient documentation on it (eg: document instruction) to have my own designed project with few hints from the outside.
+- Compare my personal production to other ISA and VM designs to gain perspective on my choices and be able to give them another shape more suited to further needs.
+- Branch to another project that mimic the behavior of a real CPU, with inspiration from the x86 ISA.
+- Branch to another project which is more like a classic VM as the JVM or python interpretation system.
+
+
+### 2025-11-17 
+
+Today small session to go more clearly toward an accumulator design. Try to respect my general design intuitions with the two registers. However one should be the accumulator and the second one i should find a name for.
+I also should choose if the cpu can be in an invalid state or not, if the responsability of maintaining the state belongs to the instructions or to the execution.
+
+
+
+
+
+
+
+
+
