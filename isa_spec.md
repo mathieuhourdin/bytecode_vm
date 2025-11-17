@@ -9,6 +9,6 @@
 | PULL | Data moving | PUL | Memory location | Sets the value of the buffer to the value of the memory at the operand address
 | ADD | CPU Calcul Operations | ADD | Add the values | None | The accumulator takes the value of retained value plus the accumulator value
 | CPR | CPU Calcul Operations | CPR | Compare if accumulator is bigger than buffer | None | The accumulator takes the value 1 if bigger thant buffer, or 0 
-| SET | CPU Calcul Operations | SET | The value of buffer is transfered to accumulator | The accumulator takes the value of the buffer (who remain unchanged)
+| SET | CPU Calcul Operations | SET | The value of buffer is transfered to accumulator | None | The accumulator takes the value of the buffer (who remain unchanged)
 | JMP | Program flow management | JMP | Jump to instruction | int | The program counter jumps to the instruction with the operand index (indexed from 1)
 | IF | Program flow management | IFF | Conditionnaly jump to instruction | None | If accumulator is 1, jumps to the next instruction. If false, to the next next one
