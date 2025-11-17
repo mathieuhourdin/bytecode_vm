@@ -6,7 +6,7 @@
 | HALT | Program setting | HLT | End of the program | None | Prints a value and puts the CPU in free mode
 | CHARGE | Data moving | CHG | Charge a new value in the buffer | int | The buffer is set to the operand value
 | PUSH | Data moving | PSH | Push the accumulator value on the stack | Memory location | The operand address is set to the accumulator's value
-| PULL | Data moving | PUL | Memory location | Sets the value of the buffer to the value of the memory at the operand address
+| PULL | Data moving | PUL | Memory location | Memory Location | Sets the value of the buffer to the value of the memory at the operand address
 | ADD | CPU Calcul Operations | ADD | Add the values | None | The accumulator takes the value of retained value plus the accumulator value
 | CPR | CPU Calcul Operations | CPR | Compare if accumulator is bigger than buffer | None | The accumulator takes the value 1 if bigger thant buffer, or 0 
 | SET | CPU Calcul Operations | SET | The value of buffer is transfered to accumulator | None | The accumulator takes the value of the buffer (who remain unchanged)
