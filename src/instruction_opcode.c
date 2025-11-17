@@ -1,8 +1,8 @@
 #include <string.h>
 
-#include "instruction_operand.h"
+#include "instruction_opcode.h"
 
-Operand operand_from_string(char* str) {
+Opcode opcode_from_string(char* str) {
     if (strcmp(str, "STT") == 0) return START;
     if (strcmp(str, "CHG") == 0) return CHARGE;
     if (strcmp(str, "ADD") == 0) return ADD;
@@ -12,11 +12,12 @@ Operand operand_from_string(char* str) {
     if (strcmp(str, "IFF") == 0) return IF;
     if (strcmp(str, "CPR") == 0) return CPR;
     if (strcmp(str, "JMP") == 0) return JMP;
+    if (strcmp(str, "SET") == 0) return SET;
     return HALT;
 }
 
-char* operand_to_string(Operand operand) {
-    switch (operand) {
+char* opcode_to_string(Opcode opcode) {
+    switch (opcode) {
         case START:
             return "STT";
         case CHARGE:
@@ -35,6 +36,8 @@ char* operand_to_string(Operand operand) {
             return "CPR";    
         case JMP:
             return "JMP";
+        case SET:
+            return "SET";
     }
     return "UNDEFINED";
 }

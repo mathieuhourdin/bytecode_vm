@@ -1,20 +1,20 @@
 #ifndef INSTRUCTION_H
 #define INSTRUCTION_H
 
-#include "instruction_operand.h"
+#include "instruction_opcode.h"
 #include "instruction_memory_location.h"
 
 
 typedef struct Instruction {
-    enum Operand operand;
+    enum Opcode opcode;
     int value;
     enum MemoryLocation destination;
 } Instruction;
 
 /**
- * returns a new instruction from operand, value and memory location
+ * returns a new instruction from opcode, value and memory location
  */
-Instruction* instruction_new(enum Operand operand, int value, MemoryLocation destination);
+Instruction* instruction_new(enum Opcode opcode, int value, MemoryLocation destination);
 
 /**
  * from a line of instruction creates a new instruction

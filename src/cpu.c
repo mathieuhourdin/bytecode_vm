@@ -11,7 +11,7 @@ Cpu *cpu = NULL;
 Cpu* cpu_new() {
     Cpu *new_cpu = malloc(sizeof(Cpu));
     new_cpu->acc = 0;
-    new_cpu->ret = 0;
+    new_cpu->buf = 0;
     new_cpu->pc = NULL;
     new_cpu->program = NULL;
     new_cpu->stacksegment = NULL;
@@ -21,12 +21,14 @@ Cpu* cpu_new() {
 void cpu_dump(const Cpu *cpu) {
     instruction_dump(cpu->pc);
     printf("Acc : %i\n", cpu->acc);
-    printf("Ret : %i\n", cpu->ret);
+    printf("Buf : %i\n", cpu->buf);
 }
 
 void cpu_initialize() {
     cpu = cpu_new();
 }
+
+/** Section of the cpu calculus operations **/
 
 /**
  *
@@ -39,14 +41,18 @@ void cpu_initialize() {
  *
  */
 void cpu_add() {
-    int ret = cpu->ret;
-    cpu->acc += cpu->ret;
-    cpu->ret = ret;
+    cpu->acc += cpu->buf;
+}
+
+void cpu_set() {
+    cpu->acc = cpu->buf;
 }
 
 void cpu_compare() {
-    cpu->acc = cpu->acc > cpu->ret;
+    cpu->acc = cpu->acc > cpu->buf;
 }
+
+/** Section of the program counter manipulation operations **/
 
 void cpu_if() {
     if (cpu->acc) {
@@ -60,9 +66,19 @@ void cpu_jump(int value) {
     cpu->pc = &cpu->program->instructions[value - 1];
 }
 
-void cpu_register_charge(int value) {
-    cpu->ret = cpu->acc;
-    cpu->acc = value;
+
+/**   Section of the data moving operations **/
+
+void cpu_charge(int value) {
+    cpu->buf = value;
+}
+
+void cpu_pull(MemoryLocation memorylocation) {
+    cpu->buf = stacksegment_pull(cpu->stacksegment, memorylocation);
+}
+
+void cpu_push(MemoryLocation memorylocation) {
+    stacksegment_push(cpu->stacksegment, cpu->acc, memorylocation);
 }
 
 int cpu_register_get_acc() {
@@ -75,23 +91,24 @@ int cpu_register_get_acc() {
 void cpu_execute_instruction() {
     cpu_dump(cpu);
     Instruction *instruction = cpu->pc;
-    switch (instruction->operand) {
+    switch (instruction->opcode) {
         case START:
             cpu->stacksegment = stacksegment_new();
             break;
         case CHARGE:
-            cpu_register_charge(instruction->value);
+            cpu_charge(instruction->value);
+            break;
+        case SET:
+            cpu_set();
             break;
         case ADD:
             cpu_add();
             break;
         case PUSH:
-            int value = cpu_register_get_acc();
-            stacksegment_push(cpu->stacksegment, value, instruction->destination);
+            cpu_push(instruction->destination);
             break;
         case PULL:
-            int pull_value = stacksegment_pull(cpu->stacksegment, instruction->destination);
-            cpu_register_charge(pull_value);
+            cpu_pull(instruction->destination);
             break;
         case CPR:
             cpu_compare();
@@ -122,7 +139,7 @@ void cpu_execute_instruction() {
 void cpu_execute_code(Program *program) {
     cpu->program = program;
     cpu->pc = program->instructions;
-    while (cpu->pc->operand != HALT) {
+    while (cpu->pc->opcode != HALT) {
         printf("Instruction : %p\n", cpu->pc);
         cpu_execute_instruction();
     }

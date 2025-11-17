@@ -161,7 +161,23 @@ What I suggest is the following :
 Today small session to go more clearly toward an accumulator design. Try to respect my general design intuitions with the two registers. However one should be the accumulator and the second one i should find a name for.
 I also should choose if the cpu can be in an invalid state or not, if the responsability of maintaining the state belongs to the instructions or to the execution.
 
+New design idea : instead of retaining the previous accumulator's value, which is an obscure behavior, let's create a design with a temporary buffer that holds any value we want to inject in the cpu. The accumulator stays as the result of calculations. And as the output value of the cpu that can be inserted into the longger time life memory.
+The buffer now has only an operative role : put a given value in the operation circuit. Split data gathering and operations on data. 
 
+
+       CPU design - Input buffer and accumulator.
+
+                     COMPARE
+       _________     ADD       _________
+      |         |    SET      |         |     CHARGE
+      |  Acc    |<------------| buffer  |<------------ Raw Value
+      |_________|             |_________|
+           |                       ^
+           |                       | 
+           | PUSH                  | PULL
+           |                       |
+           v                       |
+         Stack                   Stack
 
 
 

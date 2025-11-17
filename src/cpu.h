@@ -22,8 +22,8 @@ typedef struct StackSegment StackSegment;
  *  - If CPU has a program, code pointer should point to a valid instruction
  */
 typedef struct Cpu {
-    int acc; //the accumulator of the cpu
-    int ret; //where the accumulator value is stored each time a new value is set in the accumulator. Something like retention ?
+    int acc; //the accumulator of the cpu. Result of the operations and data to be stored on the stack
+    int buf; //Buffer. Where data is loaded before any manipulation
     Instruction *pc; //the usual term is pc program counter and not code pointer. It should be an int in the range of the program.
     Program *program;
     StackSegment *stacksegment; //we should choose if the memory belongs to the cpu or is managed separatedly and cpu just holds a reference.
